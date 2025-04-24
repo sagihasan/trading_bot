@@ -1,8 +1,0 @@
-[tool.poetry]
-name = "final_trading_bot"
-version = "0.1.0"
-description = ""
-authors = ["You"]
-
-[tool.poetry.dependencies]
-python = "^3.11"
