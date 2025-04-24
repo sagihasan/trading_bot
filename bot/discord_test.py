@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-public_webhook = os.getenv("DISCORD_WEBHOOK_PUBLIC")
-private_webhook = os.getenv("DISCORD_WEBHOOK_PRIVATE")
+public_webhook = os.getenv("DISCORD_PUBLIC_WEBHOOK")
+private_webhook = os.getenv("DISCORD_PRIVATE_WEBHOOK")
 
 def send_discord_message(webhook_url, message):
     data = {'content': message}
