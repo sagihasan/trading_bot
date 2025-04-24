@@ -1,5 +1,4 @@
 yfinance
-investing_scraper
 flask
 python-dotenv
 requests
