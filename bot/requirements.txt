@@ -1,4 +1,5 @@
+yfinance
+investing_scraper
 flask
-requests
 python-dotenv
-schedule
+requests
