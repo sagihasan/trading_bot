@@ -1,19 +1,26 @@
-from keep_alive.keep_alive import keep_alive
-from utils.helpers import example_helper
-from macro.macro_analyzer import analyze_macro
-from reports.weekly_report_generator import generate_report
+import os
+import requests
+from dotenv import load_dotenv
 
-def run_bot():
-    print("הבוט מתחיל לפעול...")
-    helper_result = example_helper()
-    print("Helper:", helper_result)
+load_dotenv()
 
-    macro_data = analyze_macro()
-    print("מאקרו:", macro_data)
+public_webhook = os.getenv("DISCORD_PUBLIC_WEBHOOK")
+private_webhook = os.getenv("DISCORD_PRIVATE_WEBHOOK")
 
-    generate_report()
-    print("נשלח דוח שבועי")
 
-if __name__ == "__main__":
-    keep_alive()
-    run_bot()
+def send_discord_message(webhook_url, message):
+    data = {'content': message}
+    response = requests.post(webhook_url, json=data)
+    if response.status_code == 204:
+        print(f"ההודעה נשלחה בהצלחה ל־Webhook: {webhook_url}")
+    else:
+        print(
+            f"שגיאה בשליחה ל־Webhook: {webhook_url} - קוד {response.status_code}"
+        )
+
+
+print("בדיקת Webhook ציבורי...")
+send_discord_message(public_webhook, "זהו רק טסט ציבורי.")
+
+print("בדיקת Webhook פרטי...")
+send_discord_message(private_webhook, "זהו רק טסט פרטי.")
