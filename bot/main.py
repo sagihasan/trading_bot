@@ -53,15 +53,3 @@ def run_bot():
 if __name__ == "__main__":
     keep_alive()
     run_bot()
-
-print("בודק Webhook ציבורי...")
-print("Webhook ציבורי:", "קיים" if public_webhook else "לא נמצא")
-
-print("בודק Webhook פרטי...")
-print("Webhook פרטי:", "קיים" if private_webhook else "לא נמצא")
-
-print("בודק מפתח Alpha Vantage...")
-print("Alpha Vantage:", "קיים" if alpha_vantage_key else "לא נמצא")
-
-print("בודק מפתח NewsAPI...")
-print("NewsAPI:", "קיים" if news_api_key else "לא נמצא")
