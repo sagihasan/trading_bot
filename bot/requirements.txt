@@ -2,4 +2,5 @@ yfinance
 discord.py
 flask
 python-dotenv
+schedule
 requests
