@@ -8,15 +8,14 @@ from keep_alive.keep_alive import keep_alive
 from utils.helpers import example_helper
 from macro.macro_analyzer import analyze_macro
 from reports.weekly_report_generator import generate_report
+from signals.signals_engine import run_signals_engine
 
-# טוען משתני סביבה
+# טוען משתנים מהסביבה
 load_dotenv()
 
-# הגדרת Webhooks
+# משתני סביבה
 private_webhook = os.getenv("DISCORD_PRIVATE_WEBHOOK")
 public_webhook = os.getenv("DISCORD_PUBLIC_WEBHOOK")
-
-# הגדרת מפתחות API
 alpha_vantage_key = os.getenv("API_ALPHA_VANTAGE_KEY")
 news_api_key = os.getenv("API_NEWS_KEY")
 
@@ -28,22 +27,24 @@ def send_discord_message(webhook_url, message):
         if response.status_code == 204:
             print(f"הודעה נשלחה בהצלחה ל־Webhook: {webhook_url}")
         else:
-            print(f"שגיאה בשליחה ל־Webhook: {webhook_url} – קוד: {response.status_code}")
+            print(f"שגיאה בשליחה ל־Webhook: {response.status_code}")
     except Exception as e:
         print(f"שגיאה בשליחת הודעה לדיסקורד: {e}")
 
 # הרצת הבוט
 def run_bot():
-    # קבלת שעה לפי שעון ישראל
     israel_tz = pytz.timezone('Asia/Jerusalem')
     now = datetime.now(israel_tz)
     current_hour = now.hour
+    current_minute = now.minute
 
-    # שליחת הודעה רק בזמנים מתאימים
     if 10 <= current_hour < 12:
         send_discord_message(private_webhook, "הבוט התחיל לפעול (ערוץ פרטי)")
     elif 1 <= current_hour < 3:
         send_discord_message(private_webhook, "סיום פעילות הבוט (ערוץ פרטי)")
+    elif current_hour == 22 and 40 <= current_minute <= 45:
+        print("22:40 הגיע – מפעיל מנוע איתותים...")
+        run_signals_engine()
 
     print("...הבוט מתחיל לפעול")
     helper_result = example_helper()
