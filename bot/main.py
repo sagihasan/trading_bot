@@ -7,6 +7,7 @@ from trade_management import log_trade_update
 from report_generator import generate_weekly_report, generate_monthly_report
 from report_scheduler import start_report_scheduler
 from alert_manager import reset_alert_flags
+from alert_manager import can_send_alert, mark_alert_sent
 
 # טעינת קובץ .env (אם יש)
 load_dotenv()
@@ -197,10 +198,20 @@ start_report_scheduler()
         while True:
     schedule.run_pending()
     manage_trades()
-    send_discord_message(private_webhook, "הבוט סיים לעבור על ניהול העסקאות.")
+
+if can_send_alert("management_sent"):
+    send_discord_message(private_webhook, "✔️ הבוט סיים לעבור על ניהול העסקאות.")
+    mark_alert_sent("management_sent")
+
+if can_send_alert("signal_sent"):
+    send_discord_message(public_webhook, "📈 יש איתות לונג!" or "📉 יש איתות שורט!")
+    mark_alert_sent("signal_sent")
     time.sleep(1)
 
     except Exception as e:
+    if can_send_alert("error_sent"):
+        send_discord_message(error_webhook, f"שגיאת בוט: {e}")
+        mark_alert_sent("error_sent")
         print(f"שגיאה: {e}")
         send_discord_message(error_webhook, f"שגיאת בוט: {e}")
 
