@@ -6,3 +6,4 @@ schedule
 requests
 pandas
 openpyxl
+matplotlib
