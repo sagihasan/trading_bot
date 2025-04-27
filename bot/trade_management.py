@@ -1,70 +1,57 @@
-import requests
+import pandas as pd
+import os
 
-# פונקציה לשליחת הודעה לדיסקורד
-def send_discord_message(webhook_url, message):
-    data = {"content": message}
-    try:
-        response = requests.post(webhook_url, json=data)
-        if response.status_code != 204:
-            print(f"שגיאה בשליחת הודעה לדיסקורד: {response.status_code}")
-    except Exception as e:
-        print(f"שגיאה בשליחת הודעה לדיסקורד: {e}")
+# יצירת קובץ Excel אם לא קיים
+if not os.path.exists('trade_management_log.xlsx'):
+    df = pd.DataFrame(columns=["Symbol", "Old Stop Loss", "New Stop Loss", "Old Take Profit", "New Take Profit", "Action"])
+    df.to_excel('trade_management_log.xlsx', index=False)
 
-# פונקציה לניהול עסקה
-def manage_trade(trade_data, webhook_url):
-    """
-    trade_data: {
-        "symbol": "AAPL",
-        "entry_price": 150,
-        "current_price": 155,
-        "stop_loss": 145,
-        "take_profit": 165,
-        "direction": "long"  # או "short"
-    }
-    """
+def manage_trade_dynamically(trade):
+    symbol = trade['symbol']
+    entry_price = trade['entry_price']
+    current_price = trade['current_price']
+    stop_loss = trade['stop_loss']
+    take_profit = trade['take_profit']
+    direction = trade['direction']
 
-    entry_price = trade_data["entry_price"]
-    current_price = trade_data["current_price"]
-    stop_loss = trade_data["stop_loss"]
-    take_profit = trade_data["take_profit"]
-    direction = trade_data["direction"]
-    symbol = trade_data["symbol"]
+    profit_percentage = ((current_price - entry_price) / entry_price) * 100 if direction == "long" else ((entry_price - current_price) / entry_price) * 100
 
-    # אחוזי שינוי מהכניסה
-    change_percent = ((current_price - entry_price) / entry_price) * 100 if direction == "long" else ((entry_price - current_price) / entry_price) * 100
+    actions = []
+    new_stop = stop_loss
+    new_take = take_profit
 
-    # זיהוי חוזקה
-    if change_percent >= 5:
-        new_stop_loss = entry_price  # להזיז סטופ לוס לכניסה
-        message = f"""חוזקה מזוהה בעסקה על {symbol}:
-        מחיר כניסה: {entry_price}
-        מחיר נוכחי: {current_price}
-        סטופ לוס קודם: {stop_loss}
-        סטופ לוס חדש: {new_stop_loss}
-        טייק פרופיט: {take_profit}
-        עדכון: העברת סטופ לוס למחיר כניסה!
-        """
-        send_discord_message(webhook_url, message)
+    # שדרוג סטופ לוס אם יש רווח
+    if profit_percentage >= 3:
+        new_stop = entry_price  # להזיז סטופ למחיר כניסה
+        actions.append("Moved Stop Loss to Entry Price")
 
-    # זיהוי חולשה
-    if change_percent <= -3:
-        message = f"""חולשה מזוהה בעסקה על {symbol}:
-        מחיר כניסה: {entry_price}
-        מחיר נוכחי: {current_price}
-        סטופ לוס: {stop_loss}
-        טייק פרופיט: {take_profit}
-        המלצה: לשקול סגירה חלקית או מלאה.
-        """
-        send_discord_message(webhook_url, message)
+    if profit_percentage >= 5:
+        new_stop = entry_price * (1.02 if direction == "long" else 0.98)  # להזיז סטופ לרווח קטן
+        actions.append("Updated Stop Loss to small profit")
 
-    # אם העסקה ברווח חזק - לשדרג טייק פרופיט
-    if change_percent >= 8:
-        new_take_profit = take_profit * 1.05  # מעלים טייק פרופיט ב-5%
-        message = f"""עדכון טייק פרופיט בעסקה על {symbol}:
-        מחיר כניסה: {entry_price}
-        מחיר נוכחי: {current_price}
-        טייק פרופיט קודם: {take_profit}
-        טייק פרופיט חדש: {round(new_take_profit, 2)}
-        סטופ לוס: {stop_loss}
-        """
-        send_discord_message(webhook_url, message)
+    if profit_percentage >= 8:
+        actions.append("Partial close 50%")
+
+    if profit_percentage >= 10:
+        new_take = take_profit * (1.05 if direction == "long" else 0.95)  # לשפר טייק פרופיט
+        actions.append("Updated Take Profit to extend")
+
+    # עדכון והודעה לדיסקורד אם היו שינויים
+    if actions:
+        message = f"ניהול עסקה חכם:\nמניה: {symbol}\nפעולות שבוצעו:\n" + "\n".join(f"- {action}" for action in actions) + f"\nמחיר נוכחי: {current_price:.2f}$\nסטופ לוס חדש: {new_stop:.2f}$\nטייק פרופיט חדש: {new_take:.2f}$"
+        send_discord_message(public_webhook, message)
+
+        # שמירה ללוג באקסל
+        df = pd.read_excel('trade_management_log.xlsx')
+        df = pd.concat([
+            df,
+            pd.DataFrame([{
+                "Symbol": symbol,
+                "Old Stop Loss": stop_loss,
+                "New Stop Loss": new_stop,
+                "Old Take Profit": take_profit,
+                "New Take Profit": new_take,
+                "Action": "; ".join(actions)
+            }])
+        ], ignore_index=True)
+        df.to_excel('trade_management_log.xlsx', index=False)
