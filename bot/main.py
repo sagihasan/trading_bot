@@ -4,6 +4,7 @@ from datetime import datetime
 import pytz
 from dotenv import load_dotenv
 from trade_management import log_trade_update
+from report_generator import generate_weekly_report, generate_monthly_report
 
 # טעינת קובץ .env (אם יש)
 load_dotenv()
@@ -189,9 +190,14 @@ if __name__ == "__main__":
         schedule.every(5).minutes.do(manage_trades)
 
         while True:
-            schedule.run_pending()
-            time.sleep(1)
+    schedule.run_pending()
+    manage_trades()
+    send_discord_message(private_webhook, "הבוט סיים לעבור על ניהול העסקאות.")
+    time.sleep(1)
 
     except Exception as e:
         print(f"שגיאה: {e}")
         send_discord_message(error_webhook, f"שגיאת בוט: {e}")
+
+generate_weekly_report()
+generate_monthly_report()
