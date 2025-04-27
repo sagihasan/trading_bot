@@ -6,9 +6,11 @@ from dotenv import load_dotenv
 from trade_management import log_trade_update
 from report_generator import generate_weekly_report, generate_monthly_report
 from report_scheduler import start_report_scheduler
+from alert_manager import reset_alert_flags
 
 # טעינת קובץ .env (אם יש)
 load_dotenv()
+reset_alert_flags()
 
 # טעינת Webhooks מהסביבה
 private_webhook = os.getenv('DISCORD_PRIVATE_WEBHOOK')
