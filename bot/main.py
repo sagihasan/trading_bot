@@ -173,17 +173,21 @@ def manage_trades():
             )
             send_discord_message(public_webhook, message)
             # הפעלת הבוט
+import schedule
+import time
+
 if __name__ == "__main__":
     try:
         print("הבוט התחיל לפעול...")
-        send_discord_message(public_webhook, "הבוט התחיל לפעול! ✅")
+        send_discord_message(public_webhook, "✅ הבוט התחיל לפעול")
 
-        # ניהול העסקאות
-        manage_trades()
+        # להריץ ניהול עסקאות כל 5 דקות
+        schedule.every(5).minutes.do(manage_trades)
 
-        print("סיום ניהול עסקאות.")
-        send_discord_message(public_webhook, "הבוט סיים לעבור על העסקאות להיום. ✅")
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
 
     except Exception as e:
-        print(f"שגיאה כללית: {e}")
-        send_discord_message(private_webhook, f"שגיאת מערכת: {e}")
+        print(f"שגיאה: {e}")
+        send_discord_message(private_webhook, f"שגיאה בבוט: {e}")
