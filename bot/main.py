@@ -2,8 +2,8 @@ import os
 import requests
 from datetime import datetime
 import pytz
-
 from dotenv import load_dotenv
+from trade_management import log_trade_update
 
 # טעינת קובץ .env (אם יש)
 load_dotenv()
@@ -11,6 +11,7 @@ load_dotenv()
 # טעינת Webhooks מהסביבה
 private_webhook = os.getenv('DISCORD_PRIVATE_WEBHOOK')
 public_webhook = os.getenv('DISCORD_PUBLIC_WEBHOOK')
+error_webhook = os.getenv('DISCORD_ERROR_WEBHOOK')
 
 # פונקציה לשליחת הודעה לדיסקורד
 def send_discord_message(webhook_url, message):
@@ -150,6 +151,7 @@ def manage_trades():
                 f"מצב שוק: תואם לניתוח.\n"
             )
             send_discord_message(public_webhook, message)
+            log_trade_update(symbol, entry, current, stop, take, status)
         elif status == "consider_short":
             # המלצה להפוך ללונג -> שורט
             message = (
@@ -161,6 +163,7 @@ def manage_trades():
                 f"מחיר נוכחי: {current}$"
             )
             send_discord_message(public_webhook, message)
+            log_trade_update(symbol, entry, current, stop, take, status)
         elif status == "consider_long":
             # המלצה להפוך לשורט -> לונג
             message = (
@@ -172,6 +175,7 @@ def manage_trades():
                 f"מחיר נוכחי: {current}$"
             )
             send_discord_message(public_webhook, message)
+            log_trade_update(symbol, entry, current, stop, take, status)
             # הפעלת הבוט
 import schedule
 import time
@@ -179,7 +183,7 @@ import time
 if __name__ == "__main__":
     try:
         print("הבוט התחיל לפעול...")
-        send_discord_message(public_webhook, "✅ הבוט התחיל לפעול")
+       send_discord_message(private_webhook, "הבוט התחיל לפעול ✅")
 
         # להריץ ניהול עסקאות כל 5 דקות
         schedule.every(5).minutes.do(manage_trades)
@@ -190,4 +194,4 @@ if __name__ == "__main__":
 
     except Exception as e:
         print(f"שגיאה: {e}")
-        send_discord_message(private_webhook, f"שגיאה בבוט: {e}")
+        send_discord_message(error_webhook, f"שגיאת בוט: {e}")
