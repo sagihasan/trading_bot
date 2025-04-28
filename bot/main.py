@@ -27,6 +27,28 @@ def send_discord_message(webhook_url, message):
             print(f"שגיאה בשליחת הודעה לדיסקורד: {response.status_code}")
     except Exception as e:
         print(f"שגיאה בשליחת הודעה לדיסקורד: {e}")
+        # פונקציה לשליחת הודעה לדיסקורד
+def send_discord_message(webhook_url, message):
+    data = {'content': message}
+    try:
+        response = requests.post(webhook_url, json=data)
+        if response.status_code != 204:
+            print(f"שגיאה בשליחת הודעה לדיסקורד: {response.status_code}")
+    except Exception as e:
+        print(f"שגיאה בשליחת הודעה לדיסקורד: {e}")
+
+# פונקציה לשליחת קובץ לדיסקורד
+def send_discord_file(webhook_url, file_path):
+    try:
+        with open(file_path, "rb") as f:
+            file = {"file": f}
+            response = requests.post(webhook_url, files=file)
+        if response.status_code == 204:
+            print(f"הקובץ נשלח לדיסקורד בהצלחה: {file_path}")
+        else:
+            print(f"שגיאה בשליחת קובץ לדיסקורד: {response.status_code}")
+    except Exception as e:
+        print(f"שגיאה בשליחת קובץ לדיסקורד: {e}")
 # רשימת עסקאות פתוחות - 118 מניות
 open_trades = [
     {"symbol": "PLTR", "entry_price": 20, "current_price": 21, "stop_loss": 19, "take_profit": 23, "direction": "long"},
@@ -195,25 +217,35 @@ if __name__ == "__main__":
 
 start_report_scheduler()
 
-        while True:
+     while True:
     schedule.run_pending()
     manage_trades()
 
-if can_send_alert("management_sent"):
-    send_discord_message(private_webhook, "✔️ הבוט סיים לעבור על ניהול העסקאות.")
-    mark_alert_sent("management_sent")
+    # שליחת התראה על ניהול עסקה
+    if can_send_alert("management_sent"):
+        send_discord_message(private_webhook, "✅ הבוט סיים לעבור על ניהול העסקאות.")
+        mark_alert_sent("management_sent")
 
-if can_send_alert("signal_sent"):
-    send_discord_message(public_webhook, "📈 יש איתות לונג!" or "📉 יש איתות שורט!")
-    mark_alert_sent("signal_sent")
+    # שליחת התראה על איתות עסקה (לונג/שורט)
+    if can_send_alert("signal_sent"):
+        send_discord_message(public_webhook, "📈 יש איתות לונג!" or "📉 יש איתות שורט!")
+        mark_alert_sent("signal_sent")
+
+    # שליחת התראה על דוח שבועי/חודשי
+    if can_send_alert("report_sent"):
+        send_discord_file(private_webhook, "weekly_report.xlsx")
+        send_discord_file(private_webhook, "monthly_report.xlsx")
+        mark_alert_sent("report_sent")
+
     time.sleep(1)
 
-    except Exception as e:
+except Exception as e:
     if can_send_alert("error_sent"):
         send_discord_message(error_webhook, f"שגיאת בוט: {e}")
         mark_alert_sent("error_sent")
-        print(f"שגיאה: {e}")
-        send_discord_message(error_webhook, f"שגיאת בוט: {e}")
+    print(f"שגיאה: {e}")
+    send_discord_message(error_webhook, f"שגיאת בוט: {e}")
 
+# יצירת דוחות
 generate_weekly_report()
-generate_monthly_report()
+generate_monthly_report() 
