@@ -211,43 +211,42 @@ import time
 if __name__ == "__main__":
     try:
         print("הבוט התחיל לפעול...")
-            send_discord_message(private_webhook, "הבוט התחיל לפעול ✅")
-            start_uptime_ping()
+        send_discord_message(private_webhook, "הבוט התחיל לפעול ✅")
+        start_uptime_ping()
 
         # להריץ ניהול עסקאות כל 5 דקות
         schedule.every(5).minutes.do(manage_trades)
 
-start_report_scheduler()
+        start_report_scheduler()
 
-     while True:
-    schedule.run_pending()
-    manage_trades()
+        while True:
+            schedule.run_pending()
+            manage_trades()
 
-    # שליחת התראה על ניהול עסקה
-    if can_send_alert("management_sent"):
-        send_discord_message(private_webhook, "✅ הבוט סיים לעבור על ניהול העסקאות.")
-        mark_alert_sent("management_sent")
+            # שליחת התראה על ניהול עסקה
+            if can_send_alert("management_sent"):
+                send_discord_message(private_webhook, "✔️ הבוט סיים לעבור על ניהול העסקאות.")
+                mark_alert_sent("management_sent")
 
-    # שליחת התראה על איתות עסקה (לונג/שורט)
-    if can_send_alert("signal_sent"):
-        send_discord_message(public_webhook, "📈 יש איתות לונג!" or "📉 יש איתות שורט!")
-        mark_alert_sent("signal_sent")
+            # שליחת התראה על איתות עסקה (לונג/שורט)
+            if can_send_alert("signal_sent"):
+                send_discord_message(public_webhook, "📈 יש איתות לונג!" or "📉 יש איתות שורט!")
+                mark_alert_sent("signal_sent")
 
-    # שליחת התראה על דוח שבועי/חודשי
-    if can_send_alert("report_sent"):
-        send_discord_file(private_webhook, "weekly_report.xlsx")
-        send_discord_file(private_webhook, "monthly_report.xlsx")
-        mark_alert_sent("report_sent")
+            # שליחת התראה על דוח שבועי/חודשי
+            if can_send_alert("report_sent"):
+                send_discord_file(private_webhook, "weekly_report.xlsx")
+                send_discord_file(private_webhook, "monthly_report.xlsx")
+                mark_alert_sent("report_sent")
 
-    time.sleep(1)
+            time.sleep(1)
 
-except Exception as e:
-    if can_send_alert("error_sent"):
+    except Exception as e:
+        if can_send_alert("error_sent"):
+            send_discord_message(error_webhook, f"שגיאת בוט: {e}")
+            mark_alert_sent("error_sent")
+        print(f"שגיאה: {e}")
         send_discord_message(error_webhook, f"שגיאת בוט: {e}")
-        mark_alert_sent("error_sent")
-    print(f"שגיאה: {e}")
-    send_discord_message(error_webhook, f"שגיאת בוט: {e}")
 
-# יצירת דוחות
 generate_weekly_report()
-generate_monthly_report() 
+generate_monthly_report()
