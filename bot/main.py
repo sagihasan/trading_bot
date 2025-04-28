@@ -8,6 +8,7 @@ from report_generator import generate_weekly_report, generate_monthly_report
 from report_scheduler import start_report_scheduler
 from alert_manager import reset_alert_flags
 from alert_manager import can_send_alert, mark_alert_sent
+from uptime_ping import start_uptime_ping
 
 # טעינת קובץ .env (אם יש)
 load_dotenv()
@@ -211,6 +212,7 @@ if __name__ == "__main__":
     try:
         print("הבוט התחיל לפעול...")
        send_discord_message(private_webhook, "הבוט התחיל לפעול ✅")
+start_uptime_ping()
 
         # להריץ ניהול עסקאות כל 5 דקות
         schedule.every(5).minutes.do(manage_trades)
