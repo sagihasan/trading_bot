@@ -211,8 +211,8 @@ import time
 if __name__ == "__main__":
     try:
         print("הבוט התחיל לפעול...")
-       send_discord_message(private_webhook, "הבוט התחיל לפעול ✅")
-start_uptime_ping()
+        send_discord_message(private_webhook, "הבוט התחיל לפעול ✅")
+        start_uptime_ping()
 
         # להריץ ניהול עסקאות כל 5 דקות
         schedule.every(5).minutes.do(manage_trades)
