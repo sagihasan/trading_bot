@@ -245,11 +245,11 @@ if __name__ == "__main__":
 
         start_report_scheduler()
 
-        def fallback_signal_if_needed():
-            israel_tz = pytz.timezone('Asia/Jerusalem')
-            now = datetime.datetime.now(israel_tz)
+  def fallback_signal_if_needed():
+    israel_tz = pytz.timezone('Asia/Jerusalem')
+    now = datetime.datetime.now(israel_tz)
 
-        if now.hour == 22 and now.minute == 40:
+    if now.hour == 22 and now.minute == 40:
         if not signal_sent_today:
             best_score = 0
             best_symbol = None
@@ -262,16 +262,14 @@ if __name__ == "__main__":
 
             if best_symbol:
                 if best_score >= 6:
-                    message = f"""📊 **איתות יומי חובה לפי תנאים חלקיים**
-המניה עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
-ניקוד כולל: **{best_score}/12**
-המלצת הבוט: ✅ להיכנס לעסקה"""
+                    message = f"""**איתות יומי חובה לפי התנאים החזקים**\nהמניה עם הסקור הגבוה ביותר היום: **{best_symbol}**\nיעילות כוללת: **{best_score}/12**\nהמלצת הבוט: ✅ להיכנס לעסקה"""
                 else:
-                    message = f"""📊 **איתות יומי חובה לפי תנאים חלקיים**
-המניה עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
-ניקוד כולל: **{best_score}/12**
-המלצת הבוט: ❌ לא להיכנס לעסקה"""
+                    message = f"""**איתות יומי חובה לפי התנאים החלשים**\nהמניה עם הסקור הגבוה ביותר היום: **{best_symbol}**\nיעילות כוללת: **{best_score}/12**\nהמלצת הבוט: ❌ לא להיכנס לעסקה"""
+
                 send_discord_message(public_webhook, message)
+                mark_alert_sent("signal_sent")
+                global signal_sent_today
+                signal_sent_today = True
 
         while True:
             schedule.run_pending()
