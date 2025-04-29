@@ -311,4 +311,5 @@ def fallback_signal_if_needed():
 generate_weekly_report()
 generate_monthly_report()
 
+print("מריץ בדיקה ידנית לאיתות יומי...")
 fallback_signal_if_needed()
