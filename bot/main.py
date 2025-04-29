@@ -272,10 +272,10 @@ def fallback_signal_if_needed():
 המניה עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
 ניקוד כולל: **{best_score}/12**
 המלצת הבוט: ❌ לא להיכנס לעסקה"""
-    send_discord_message(public_webhook, message)
+                     send_discord_message(public_webhook, message)
 
-    except Exception as e:
-        print(f"שגיאת איתות חכם: {e}")
+        except Exception as e:
+            print(f"שגיאת איתות חכם: {e}")
         
         while True:
             schedule.run_pending()
