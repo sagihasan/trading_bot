@@ -1,29 +1,23 @@
 import schedule
 import time
-import datetime
+import os
 from report_generator import generate_weekly_report, generate_monthly_report
-from utils.alert_manager import mark_alert_sent
-from config import private_webhook
+from alert_manager import send_discord_message
 
-def send_monthly_report():
-    # שליחת דו"ח חודשי רק אם היום הוא הראשון לחודש
-    if datetime.datetime.now().day != 1:
-        return
-
-    try:
-        generate_monthly_report()
-        send_discord_file(private_webhook, "monthly_report.xlsx")
-        mark_alert_sent("monthly_sent")
-    except Exception as e:
-        print(f"שגיאה בשליחת הדו\"ח החודשי: {e}")
+# שליפת Webhook מהסביבה
+private_webhook = os.getenv("DISCORD_PRIVATE_WEBHOOK")
 
 def start_report_scheduler():
-    # שליחת דו"ח שבועי כל שבת ב־12:00 בצהריים
+    # שליחת דוח שבועי כל שבת ב־12:00 בצהריים
     schedule.every().saturday.at("12:00").do(generate_weekly_report)
 
-    # שליחת דו"ח חודשי (תנאי ל־1 לחודש כל יום ב־12:00)
+    # שליחת דוח חודשי כל 1 לחודש ב־12:00 בצהריים
     schedule.every().day.at("12:00").do(send_monthly_report)
 
     while True:
         schedule.run_pending()
         time.sleep(1)
+
+def send_monthly_report():
+    generate_monthly_report()
+    send_discord_message(private_webhook, "הבוט שלח דוח חודשי אוטומטי")
