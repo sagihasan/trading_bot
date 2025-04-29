@@ -244,8 +244,7 @@ if __name__ == "__main__":
         schedule.every(5).minutes.do(manage_trades)
 
         start_report_scheduler()
-
-def fallback_signal_if_needed():
+        def fallback_signal_if_needed():
     try:
         israel_tz = pytz.timezone('Asia/Jerusalem')
         now = datetime.datetime.now(israel_tz)
@@ -263,19 +262,20 @@ def fallback_signal_if_needed():
 
                 if best_symbol:
                     if best_score >= 6:
-                        message = f"""איתות יומי חכם לפי תנאים חזקים:
+                        message = f"""איתות יומי חכם לפי תנאים חזקים: 
 המניה עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
-ציון כולל: **{best_score}/12**
-המלצת הבוט: ✅ ניתן להיכנס לעסקה"""
+ניקוד כולל: **{best_score}/12**
+המלצת הבוט: ✅ להיכנס לעסקה"""
                     else:
-                        message = f"""איתות יומי חכם לפי תנאים חלקיים:
+                        message = f"""איתות יומי חכם לפי תנאים חלקיים: 
 המניה עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
-ציון כולל: **{best_score}/12**
+ניקוד כולל: **{best_score}/12**
 המלצת הבוט: ❌ לא להיכנס לעסקה"""
+
                     send_discord_message(public_webhook, message)
 
     except Exception as e:
-        print(f"שגיאה באיתות חכם: {e}")
+        print(f"שגיאה באיתות חלופי: {e}")
         
         while True:
             schedule.run_pending()
