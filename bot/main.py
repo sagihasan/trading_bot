@@ -263,19 +263,19 @@ def fallback_signal_if_needed():
 
                 if best_symbol:
                     if best_score >= 6:
-                        message = f"""**איתות יומי חכם לפי תנאים חלקיים**
+                        message = f"""איתות יומי חכם לפי תנאים חזקים:
 המניה עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
-ניקוד כולל: **{best_score}/12**
+ציון כולל: **{best_score}/12**
 המלצת הבוט: ✅ ניתן להיכנס לעסקה"""
                     else:
-                        message = f"""**איתות יומי חכם לפי תנאים חלקיים**
+                        message = f"""איתות יומי חכם לפי תנאים חלקיים:
 המניה עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
-ניקוד כולל: **{best_score}/12**
+ציון כולל: **{best_score}/12**
 המלצת הבוט: ❌ לא להיכנס לעסקה"""
-                     send_discord_message(public_webhook, message)
+                    send_discord_message(public_webhook, message)
 
-        except Exception as e:
-            print(f"שגיאת איתות חכם: {e}")
+    except Exception as e:
+        print(f"שגיאה באיתות חכם: {e}")
         
         while True:
             schedule.run_pending()
