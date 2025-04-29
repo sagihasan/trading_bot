@@ -245,7 +245,7 @@ if __name__ == "__main__":
 
         start_report_scheduler()
 
-  def fallback_signal_if_needed():
+def fallback_signal_if_needed():
     israel_tz = pytz.timezone('Asia/Jerusalem')
     now = datetime.datetime.now(israel_tz)
 
