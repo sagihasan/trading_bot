@@ -8,18 +8,18 @@ public_webhook = os.getenv("DISCORD_PUBLIC_WEBHOOK")
 
 # רשימת המניות לבדיקה
 symbols = [
-    "PLTR", "AMZN", "NVDA", "AAPL", "TSLA", "ANET", "SNEX", "CRGY", "MSFT", "GOOG",
-    "AMD", "ADBE", "META", "AI", "AR", "ALSN", "ASGN", "HIMS", "ASTS", "HOOD",
-    "DKNG", "SOUN", "APP", "PZZA", "AVGO", "SMCI", "ADI", "SEDG", "ARKK", "PERI",
-    "NU", "ACHC", "SMMT", "ZIM", "GRPN", "RKT", "EBAY", "CVNA", "XBI", "PANW",
-    "NFLX", "ET", "LNG", "OXY", "PXD", "VLO", "PSX", "FANG", "CTRA", "PBR", "COST",
-    "WMT", "TGT", "LOW", "HD", "KR", "SBUX", "MCD", "CMG", "WING", "DPZ", "DRI",
-    "NKE", "LULU", "XOM", "CVX", "COP", "MRO", "APA", "HAL", "SLB", "BKR", "PSX",
-    "PAA", "OKE", "WMB", "ENB", "KMI", "EOG", "PBF", "MPC", "HES", "FSLR", "SEDG",
-    "RUN", "SPWR", "JKS", "DQ", "MAXN", "NEE", "DUK", "SO", "D", "AEP", "EXC",
-    "ED", "PEG", "FE", "EIX", "AES", "TATT", "ALL", "ALKS"
+    "AAPL", "ACHC", "ADI", "ADBE", "AI", "ALKS", "ALRM", "ALL", "AMAT", "AMD", "AMZN",
+    "ANET", "APP", "APPF", "AR", "ARKK", "ASAN", "ASGN", "ASTS", "AVGO", "AVLR", "CAT",
+    "CMG", "COIN", "COST", "CRGY", "CRWD", "CVNA", "DDOG", "DKNG", "DQ", "DRI", "DUK",
+    "EBAY", "ED", "ET", "EIX", "EXC", "FANG", "FROG", "FSLR", "FUBO", "GOOG", "GRPN",
+    "GTLB", "HD", "HIMS", "HES", "HOOD", "HUBS", "JKS", "KLAC", "KR", "LOW", "LRCX",
+    "LNG", "LULU", "MAXN", "MCD", "MNDY", "MPC", "META", "MSTR", "MU", "NFLX", "NEE",
+    "NET", "NKE", "NOW", "NU", "NXPI", "NVDA", "OKTA", "ON", "OXY", "PANW", "PATH",
+    "PBF", "PD", "PEG", "PERI", "PZZA", "PLTR", "PSX", "PXD", "RKT", "RNG", "RUN",
+    "SAIL", "SEDG", "SMCI", "SMMT", "SNEX", "SO", "SOUN", "SPWR", "SPLK", "SQ", "SBUX",
+    "TEAM", "TATT", "TGT", "TENB", "TSLA", "TXN", "UPST", "VLO", "VRNS", "WK", "WING",
+    "WMT", "XBI", "XBT", "ZI", "ZIM"
 ]
-
 # פונקציה לניתוח מניה
 def analyze_stock(symbol):
     try:
