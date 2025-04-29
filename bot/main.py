@@ -203,37 +203,24 @@ def manage_trades():
                 f"טייק פרופיט: {take}$\n"
                 f"מצב שוק: תואם לניתוח.\n"
             )
-            send_discord_message(public_webhook, def format_trade_signal(
-    symbol,
-    direction,
-    entry_price,
-    stop_loss,
-    take_profit,
-    market_condition,
-    trend_line,
-    support_resistance,
-    fundamental_status,
-    bot_recommendation,
-    total_score,
-    strategic_zone=None
-):
-    message = f"""איתות יומי לפי התנאים של הבוט:
-מניה: {symbol}
-כיוון מתוכנן: {direction}
-מחיר כניסה: {entry_price}$
-סטופ לוס: {stop_loss}$
-טייק פרופיט: {take_profit}$
-מצב שוק: {market_condition}
-קו מגמה: {trend_line}
-קו תמיכה/התנגדות: {support_resistance}
-ניתוח פונדומנטלי: {fundamental_status}
-המלצת בוט: {bot_recommendation}
-ציון כולל: {total_score}/8"""
+           # יצירת הודעת האיתות בפורמט החדש
+formatted_message = format_trade_signal(
+    symbol=symbol,
+    direction=direction,
+    entry_price=entry_price,
+    stop_loss=stop_loss,
+    take_profit=take_profit,
+    market_condition=market_condition,
+    trend_line=trend_line,
+    support_resistance=support_resistance,
+    fundamental_status=fundamental_status,
+    bot_recommendation=bot_recommendation,
+    total_score=total_score,
+    strategic_zone=strategic_zone  # אם אין – תשאיר כ־None
+)
 
-    if strategic_zone:
-        message += f"\nאזור אסטרטגי: {strategic_zone}"
-
-    return message)
+# שליחת ההודעה המעוצבת לדיסקורד
+send_discord_message(public_webhook, formatted_message)
             log_trade_update(symbol, entry, current, stop, take, status)
         elif status == "consider_short":
             # המלצה להפוך ללונג -> שורט
