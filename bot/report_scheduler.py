@@ -2,7 +2,7 @@ import schedule
 import time
 import datetime
 from report_generator import generate_weekly_report, generate_monthly_report
-from utils.alert_manager import send_discord_file, mark_alert_sent
+from utils.alert_manager import mark_alert_sent
 from config import private_webhook
 
 def send_monthly_report():
