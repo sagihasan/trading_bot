@@ -249,7 +249,7 @@ if __name__ == "__main__":
             israel_tz = pytz.timezone('Asia/Jerusalem')
             now = datetime.datetime.now(israel_tz)
 
-    if now.hour == 22 and now.minute == 40:
+        if now.hour == 22 and now.minute == 40:
         if not signal_sent_today:
             best_score = 0
             best_symbol = None
