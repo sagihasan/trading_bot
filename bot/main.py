@@ -328,5 +328,38 @@ def fallback_signal_if_needed():
 generate_weekly_report()
 generate_monthly_report()
 
-print("מריץ בדיקה ידנית לאיתות יומי...")
-fallback_signal_if_needed()
+def fallback_signal_if_needed():
+    symbol = "PLTR"
+    direction = "LONG"
+    entry_price = 20
+    stop_loss = 19
+    take_profit = 23
+    market_condition = "תואם לניתוח."
+    trend_line = "כן מגמה"
+    support_resistance = "כן תמיכה/התנגדות"
+    fundamental_status = "ניתוח פונדמנטלי תקין"
+    bot_recommendation = "המלצה להיכנס"
+    total_score = 8
+    strategic_zone = "Golden Zone"
+
+    formatted_message = format_trade_signal(
+        symbol=symbol,
+        direction=direction,
+        entry_price=entry_price,
+        stop_loss=stop_loss,
+        take_profit=take_profit,
+        market_condition=market_condition,
+        trend_line=trend_line,
+        support_resistance=support_resistance,
+        fundamental_status=fundamental_status,
+        bot_recommendation=bot_recommendation,
+        total_score=total_score,
+        strategic_zone=strategic_zone
+    )
+
+    send_discord_message(public_webhook, formatted_message)
+
+
+if __name__ == "__main__":
+    print("בדיקה ידנית התחילה...")
+    fallback_signal_if_needed()
