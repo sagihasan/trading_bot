@@ -10,38 +10,6 @@ from utils.alert_manager import mark_alert_sent, can_send_alert, reset_alert_fla
 from uptime_ping import start_uptime_ping
 signal_sent_today = False
 
-def format_trade_signal(
-    symbol,
-    direction,
-    entry_price,
-    stop_loss,
-    take_profit,
-    market_condition,
-    trend_line,
-    support_resistance,
-    fundamental_status,
-    bot_recommendation,
-    total_score,
-    strategic_zone=None
-):
-    message = f"""איתות יומי לפי התנאים של הבוט:
-מניה: {symbol}
-כיוון מתוכנן: {direction}
-מחיר כניסה: {entry_price}$
-סטופ לוס: {stop_loss}$
-טייק פרופיט: {take_profit}$
-מצב שוק: {market_condition}
-קו מגמה: {trend_line}
-קו תמיכה/התנגדות: {support_resistance}
-ניתוח פונדומנטלי: {fundamental_status}
-המלצת בוט: {bot_recommendation}
-ציון כולל: {total_score}/8"""
-
-    if strategic_zone:
-        message += f"\nאזור אסטרטגי: {strategic_zone}"
-
-    return message
-
 # טעינת קובץ .env (אם יש)
 load_dotenv()
 reset_alert_flags()
@@ -235,7 +203,37 @@ def manage_trades():
                 f"טייק פרופיט: {take}$\n"
                 f"מצב שוק: תואם לניתוח.\n"
             )
-            send_discord_message(public_webhook, message)
+            send_discord_message(public_webhook, def format_trade_signal(
+    symbol,
+    direction,
+    entry_price,
+    stop_loss,
+    take_profit,
+    market_condition,
+    trend_line,
+    support_resistance,
+    fundamental_status,
+    bot_recommendation,
+    total_score,
+    strategic_zone=None
+):
+    message = f"""איתות יומי לפי התנאים של הבוט:
+מניה: {symbol}
+כיוון מתוכנן: {direction}
+מחיר כניסה: {entry_price}$
+סטופ לוס: {stop_loss}$
+טייק פרופיט: {take_profit}$
+מצב שוק: {market_condition}
+קו מגמה: {trend_line}
+קו תמיכה/התנגדות: {support_resistance}
+ניתוח פונדומנטלי: {fundamental_status}
+המלצת בוט: {bot_recommendation}
+ציון כולל: {total_score}/8"""
+
+    if strategic_zone:
+        message += f"\nאזור אסטרטגי: {strategic_zone}"
+
+    return message)
             log_trade_update(symbol, entry, current, stop, take, status)
         elif status == "consider_short":
             # המלצה להפוך ללונג -> שורט
