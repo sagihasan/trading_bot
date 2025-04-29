@@ -311,3 +311,8 @@ def fallback_signal_if_needed():
 
 generate_weekly_report()
 generate_monthly_report()
+
+# === הרצת בדיקה ידנית ל־fallback_signal_if_needed ===
+if __name__ == "__main__":
+    print("מריץ בדיקה ידנית...")
+    fallback_signal_if_needed()
