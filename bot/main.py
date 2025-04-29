@@ -239,12 +239,13 @@ if __name__ == "__main__":
         print("הבוט התחיל לפעול...")
         send_discord_message(private_webhook, "הבוט התחיל לפעול ✅")
         start_uptime_ping()
-
-        # להריץ ניהול עסקאות כל 5 דקות
         schedule.every(5).minutes.do(manage_trades)
-
         start_report_scheduler()
-        def fallback_signal_if_needed():
+    except Exception as e:
+        print(f"שגיאה בהרצת הבוט: {e}")
+        send_discord_message(error_webhook, f"שגיאה בהרצת הבוט: {e}")
+        
+def fallback_signal_if_needed():
     try:
         israel_tz = pytz.timezone('Asia/Jerusalem')
         now = datetime.datetime.now(israel_tz)
@@ -275,7 +276,7 @@ if __name__ == "__main__":
                     send_discord_message(public_webhook, message)
 
     except Exception as e:
-        print(f"שגיאה באיתות חלופי: {e}")
+        print(f"שגיאה בשליחת איתות fallback: {e}")
         
         while True:
             schedule.run_pending()
