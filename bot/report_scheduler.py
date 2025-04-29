@@ -2,7 +2,6 @@ import schedule
 import time
 import os
 from report_generator import generate_weekly_report, generate_monthly_report
-from utils.alert_manager import send_discord_message
 
 # שליפת Webhook מהסביבה
 private_webhook = os.getenv("DISCORD_PRIVATE_WEBHOOK")
