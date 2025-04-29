@@ -12,11 +12,12 @@ symbols = [
     "AMD", "ADBE", "META", "AI", "AR", "ALSN", "ASGN", "HIMS", "ASTS", "HOOD",
     "DKNG", "SOUN", "APP", "PZZA", "AVGO", "SMCI", "ADI", "SEDG", "ARKK", "PERI",
     "NU", "ACHC", "SMMT", "ZIM", "GRPN", "RKT", "EBAY", "CVNA", "XBI", "PANW",
-    "NFLX", "ET", "LNG", "WTRG", "AROC", "SLM", "AFRM", "RBLX", "SHOP", "ROKU",
-    "COIN", "CRWD", "UPST", "FUBO", "S", "DDOG", "ABNB", "PATH", "MNDY", "NET",
-    "DOCN", "ZS", "SNOW", "MDB", "TWLO", "U", "BILL", "CFLT", "TASK", "ESTC",
-    "GTLB", "FROG", "SPLK", "VRNS", "OKTA", "ASAN", "HUBS", "ZI", "PD", "WK",
-    "NOW", "TEAM", "MSTR", "AVLR", "APPF", "RNG", "TENB", "ALRM", "SAIL"
+    "NFLX", "ET", "LNG", "OXY", "PXD", "VLO", "PSX", "FANG", "CTRA", "PBR", "COST",
+    "WMT", "TGT", "LOW", "HD", "KR", "SBUX", "MCD", "CMG", "WING", "DPZ", "DRI",
+    "NKE", "LULU", "XOM", "CVX", "COP", "MRO", "APA", "HAL", "SLB", "BKR", "PSX",
+    "PAA", "OKE", "WMB", "ENB", "KMI", "EOG", "PBF", "MPC", "HES", "FSLR", "SEDG",
+    "RUN", "SPWR", "JKS", "DQ", "MAXN", "NEE", "DUK", "SO", "D", "AEP", "EXC",
+    "ED", "PEG", "FE", "EIX", "AES", "TATT", "ALL", "ALKS"
 ]
 
 # פונקציה לניתוח מניה
