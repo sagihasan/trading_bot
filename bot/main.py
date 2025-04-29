@@ -167,6 +167,8 @@ open_trades = [
     {"symbol": "ED", "entry_price": 90, "current_price": 90, "stop_loss": 85, "take_profit": 95, "direction": "long"},
     {"symbol": "PEG", "entry_price": 60, "current_price": 60, "stop_loss": 57, "take_profit": 64, "direction": "long"}
 ]
+
+print(f"Loaded {len(open_trades)} stocks successfully!")
 # פונקציה לזיהוי שינוי מגמה או בעיה בעסקה
 def check_trade_direction(trade):
     entry = trade['entry_price']
@@ -294,7 +296,6 @@ if __name__ == "__main__":
                 send_discord_file(private_webhook, "monthly_report.xlsx")
                 mark_alert_sent("report_sent")
 
-            time.sleep(1)
 
     except Exception as e:
         if can_send_alert("error_sent"):
