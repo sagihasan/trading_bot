@@ -246,31 +246,36 @@ if __name__ == "__main__":
         start_report_scheduler()
 
 def fallback_signal_if_needed():
-    israel_tz = pytz.timezone('Asia/Jerusalem')
-    now = datetime.datetime.now(israel_tz)
+    try:
+        israel_tz = pytz.timezone('Asia/Jerusalem')
+        now = datetime.datetime.now(israel_tz)
 
-    if now.hour == 22 and now.minute == 40:
-        if not signal_sent_today:
-            best_score = 0
-            best_symbol = None
+        if now.hour == 22 and now.minute == 40:
+            if not signal_sent_today:
+                best_score = 0
+                best_symbol = None
 
-            for symbol, data in stock_scores.items():
-                score = data.get("score", 0)
-                if score > best_score:
-                    best_score = score
-                    best_symbol = symbol
+                for symbol, data in stock_scores.items():
+                    score = data.get("score", 0)
+                    if score > best_score:
+                        best_score = score
+                        best_symbol = symbol
 
-            if best_symbol:
-                if best_score >= 6:
-                    message = f"""**איתות יומי חובה לפי התנאים החזקים**\nהמניה עם הסקור הגבוה ביותר היום: **{best_symbol}**\nיעילות כוללת: **{best_score}/12**\nהמלצת הבוט: ✅ להיכנס לעסקה"""
-                else:
-                    message = f"""**איתות יומי חובה לפי התנאים החלשים**\nהמניה עם הסקור הגבוה ביותר היום: **{best_symbol}**\nיעילות כוללת: **{best_score}/12**\nהמלצת הבוט: ❌ לא להיכנס לעסקה"""
-
-                send_discord_message(public_webhook, message)
-                mark_alert_sent("signal_sent")
-                global signal_sent_today
-                signal_sent_today = True
-
+                if best_symbol:
+                    if best_score >= 6:
+                        message = f"""**איתות יומי חובה לפי תנאים חזקים**
+הניהול עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
+ניקוד כולל: **{best_score}/12**
+המלצת הבוט: ✅ להיכנס לעסקה"""
+                    else:
+                        message = f"""**איתות יומי חובה לפי תנאים חלקיים**
+הניהול עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
+ניקוד כולל: **{best_score}/12**
+המלצת הבוט: ❌ לא להיכנס לעסקה"""
+                    send_discord_message(public_webhook, message)
+    except Exception as e:
+      print(f"שגיאה באיתות חובה: {e}")
+        
         while True:
             schedule.run_pending()
             manage_trades()
