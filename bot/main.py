@@ -6,8 +6,7 @@ from dotenv import load_dotenv
 from trade_management import log_trade_update
 from report_generator import generate_weekly_report, generate_monthly_report
 from report_scheduler import start_report_scheduler
-from alert_manager import reset_alert_flags
-from alert_manager import can_send_alert, mark_alert_sent
+from utils.alert_manager import mark_alert_sent, can_send_alert, reset_alert_flags
 from uptime_ping import start_uptime_ping
 signal_sent_today = False
 
