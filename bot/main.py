@@ -9,6 +9,7 @@ from report_scheduler import start_report_scheduler
 from alert_manager import reset_alert_flags
 from alert_manager import can_send_alert, mark_alert_sent
 from uptime_ping import start_uptime_ping
+signal_sent_today = False
 
 # טעינת קובץ .env (אם יש)
 load_dotenv()
@@ -219,9 +220,39 @@ if __name__ == "__main__":
 
         start_report_scheduler()
 
+        def fallback_signal_if_needed():
+    israel_tz = pytz.timezone('Asia/Jerusalem')
+    now = datetime.datetime.now(israel_tz)
+
+    if now.hour == 22 and now.minute == 40:
+        if not signal_sent_today:
+            best_score = 0
+            best_symbol = None
+
+            for symbol, data in stock_scores.items():
+                score = data.get("score", 0)
+                if score > best_score:
+                    best_score = score
+                    best_symbol = symbol
+
+            if best_symbol:
+                if best_score >= 6:
+                    message = f"""📊 **איתות יומי חובה לפי תנאים חלקיים**
+המניה עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
+ניקוד כולל: **{best_score}/12**
+המלצת הבוט: ✅ להיכנס לעסקה"""
+                else:
+                    message = f"""📊 **איתות יומי חובה לפי תנאים חלקיים**
+המניה עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
+ניקוד כולל: **{best_score}/12**
+המלצת הבוט: ❌ לא להיכנס לעסקה"""
+                send_discord_message(public_webhook, message)
+
         while True:
             schedule.run_pending()
             manage_trades()
+            fallback_signal_if_needed()
+            time.sleep(1)
 
             # שליחת התראה על ניהול עסקה
             if can_send_alert("management_sent"):
@@ -232,6 +263,7 @@ if __name__ == "__main__":
             if can_send_alert("signal_sent"):
                 send_discord_message(public_webhook, "📈 יש איתות לונג!" or "📉 יש איתות שורט!")
                 mark_alert_sent("signal_sent")
+                signal_sent_today = True
 
             # שליחת התראה על דוח שבועי/חודשי
             if can_send_alert("report_sent"):
