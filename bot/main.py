@@ -1,5 +1,7 @@
 import os
 import requests
+import schedule
+import time
 from datetime import datetime
 import pytz
 from dotenv import load_dotenv
@@ -355,10 +357,49 @@ def fallback_signal_if_needed():
         strategic_zone=strategic_zone
     )
 
-    send_discord_message(public_webhook, formatted_message)
+    send_discord_message(public_webhook, message)
 
+import schedule
+import time
+
+def fallback_signal_if_needed():
+    symbol = "PLTR"
+    direction = "LONG"
+    entry_price = 20
+    stop_loss = 19
+    take_profit = 23
+    market_condition = "תואם לניתוח."
+    trend_line = "קו מגמה"
+    support_resistance = "קו תמיכה/התנגדות"
+    fundamental_status = "ניתוח פונדמנטלי תקין"
+    bot_recommendation = "המלצה להיכנס"
+    total_score = 8
+    strategic_zone = "Golden Zone"
+
+    formatted_message = format_trade_signal(
+        symbol=symbol,
+        direction=direction,
+        entry_price=entry_price,
+        stop_loss=stop_loss,
+        take_profit=take_profit,
+        market_condition=market_condition,
+        trend_line=trend_line,
+        support_resistance=support_resistance,
+        fundamental_status=fundamental_status,
+        bot_recommendation=bot_recommendation,
+        total_score=total_score,
+        strategic_zone=strategic_zone
+    )
+
+    send_discord_message(public_webhook, formatted_message)
 
 if __name__ == "__main__":
     print("בדיקה ידנית התחילה...")
-    run_signals_engine()  # ← הוסף את זה כאן
-    fallback_signal_if_needed()()
+    run_signals_engine()  # זו הפונקציה שמריצה את הסריקה הרגילה
+    fallback_signal_if_needed()  # שולח איתות בדיקה
+
+    schedule.every().minutes.do(manage_trades)  # בדיקת עסקאות פתוחות
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
