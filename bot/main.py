@@ -335,6 +335,7 @@ import schedule
 import time
 
 def fallback_signal_if_needed():
+    print("fallback_signal_if_needed הופעלה")
     symbol = "PLTR"
     direction = "LONG"
     entry_price = 20
@@ -364,6 +365,7 @@ def fallback_signal_if_needed():
     )
 
     send_discord_message(public_webhook, formatted_message)
+    print("שליחת איתות - הצליחה (בדיקה)")
 
 if __name__ == "__main__":
     print("בדיקה ידנית התחילה...")
