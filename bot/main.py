@@ -193,7 +193,6 @@ def manage_trades():
         take = trade['take_profit']
         direction = trade['direction']
 
-def manage_trades():
     for trade in open_trades:
         status = check_trade_direction(trade)
         symbol = trade['symbol']
@@ -244,45 +243,6 @@ def manage_trades():
             )
             send_discord_message(public_webhook, message)
             log_trade_update(symbol, entry, current, stop, take, status)
-
-# שליחת ההודעה המעוצבת לדיסקורד
-elif status == "consider_short":
-    # המלצה להפוך לשורט ← לונג
-    message = (
-        f"התראת שינוי מגמה!\n"
-        f"מניה: {symbol}\n"
-        f"כיוון מתוכנן: LONG\n"
-        f"סטטוס: ירידה חזקה זוהתה.\n"
-        f"המלצה: לסגור עסקת שורט ולשקול פתיחת LONG.\n"
-        f"מחיר נוכחי: {current}$"
-    )
-    send_discord_message(public_webhook, message)
-    log_trade_update(symbol, entry, current, stop, take, status)
-
-elif status == "consider_long":
-    # המלצה להפוך ללונג ← שורט
-    message = (
-        f"התראת שינוי מגמה!\n"
-        f"מניה: {symbol}\n"
-        f"כיוון מתוכנן: SHORT\n"
-        f"סטטוס: עלייה חזקה זוהתה.\n"
-        f"המלצה: לסגור עסקת לונג ולשקול פתיחת SHORT.\n"
-        f"מחיר נוכחי: {current}$"
-    )
-    send_discord_message(public_webhook, message)
-    log_trade_update(symbol, entry, current, stop, take, status)
-
-elif status == "consider_long":
-    message = (
-        f"התרעת שינוי מגמה!\n"
-        f"מניה: {symbol}\n"
-        f"כיוון מתוכנן: SHORT\n"
-        f"סטטוס: עלייה חזקה זוהתה.\n"
-        f"המלצה: לסגור עסקת לונג ולשקול פתיחת SHORT.\n"
-        f"מחיר נוכחי: {current}$"
-    )
-    send_discord_message(public_webhook, message)
-    log_trade_update(symbol, entry, current, stop, take, status)
             # הפעלת הבוט
 import schedule
 import time
