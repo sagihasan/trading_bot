@@ -262,35 +262,7 @@ if __name__ == "__main__":
         send_discord_message(error_webhook, f"שגיאה בהרצת הבוט: {e}")
         
 
-def fallback_signal_if_needed():
-    try:
-        israel_tz = pytz.timezone('Asia/Jerusalem')
-        now = datetime.datetime.now(israel_tz)
 
-        if now.hour == 22 and now.minute == 40:
-            if not signal_sent_today:
-                best_score = 0
-                best_symbol = None
-
-                for symbol, data in stock_scores.items():
-                    score = data.get("score", 0)
-                    if score > best_score:
-                        best_score = score
-                        best_symbol = symbol
-
-                if best_symbol:
-                    if best_score >= 6:
-                        message = f"""איתות יומי חכם לפי תנאים חזקים: 
-המניה עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
-ניקוד כולל: **{best_score}/12**
-המלצת הבוט: ✅ להיכנס לעסקה"""
-                    else:
-                        message = f"""איתות יומי חכם לפי תנאים חלקיים: 
-המניה עם הפוטנציאל הגבוה ביותר היום: **{best_symbol}**
-ניקוד כולל: **{best_score}/12**
-המלצת הבוט: ❌ לא להיכנס לעסקה"""
-
-                    send_discord_message(public_webhook, message)
     except Exception as e:
         print(f"שגיאה בשליחת איתות fallback: {e}")
         
