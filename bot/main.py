@@ -363,4 +363,5 @@ def fallback_signal_if_needed():
 
 if __name__ == "__main__":
     print("בדיקה ידנית התחילה...")
-    fallback_signal_if_needed()
+    run_signals_engine()  # ← הוסף את זה כאן
+    fallback_signal_if_needed()()
