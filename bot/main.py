@@ -8,6 +8,7 @@ from report_generator import generate_weekly_report, generate_monthly_report
 from report_scheduler import start_report_scheduler
 from utils.alert_manager import mark_alert_sent, can_send_alert, reset_alert_flags
 from uptime_ping import start_uptime_ping
+from signals.signal_selector import get_best_signal
 signal_sent_today = False
 
 # טעינת קובץ .env (אם יש)
