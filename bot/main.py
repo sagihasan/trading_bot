@@ -221,32 +221,31 @@ formatted_message = format_trade_signal(
 )
 
 # שליחת ההודעה המעוצבת לדיסקורד
-send_discord_message(public_webhook, formatted_message)
-            log_trade_update(symbol, entry, current, stop, take, status)
-        elif status == "consider_short":
-            # המלצה להפוך ללונג -> שורט
-            message = (
-                f"התראת שינוי מגמה!\n"
-                f"מניה: {symbol}\n"
-                f"כיוון מתוכנן: LONG\n"
-                f"סטטוס: ירידה חזקה זוהתה.\n"
-                f"המלצה: לסגור עסקת לונג ולשקול פתיחת SHORT.\n"
-                f"מחיר נוכחי: {current}$"
-            )
-            send_discord_message(public_webhook, message)
-            log_trade_update(symbol, entry, current, stop, take, status)
-        elif status == "consider_long":
-            # המלצה להפוך לשורט -> לונג
-            message = (
-                f"התראת שינוי מגמה!\n"
-                f"מניה: {symbol}\n"
-                f"כיוון מתוכנן: SHORT\n"
-                f"סטטוס: עלייה חזקה זוהתה.\n"
-                f"המלצה: לסגור עסקת שורט ולשקול פתיחת LONG.\n"
-                f"מחיר נוכחי: {current}$"
-            )
-            send_discord_message(public_webhook, message)
-            log_trade_update(symbol, entry, current, stop, take, status)
+elif status == "consider_short":
+    # המלצה להפוך לשורט ← לונג
+    message = (
+        f"התראת שינוי מגמה!\n"
+        f"מניה: {symbol}\n"
+        f"כיוון מתוכנן: LONG\n"
+        f"סטטוס: ירידה חזקה זוהתה.\n"
+        f"המלצה: לסגור עסקת שורט ולשקול פתיחת LONG.\n"
+        f"מחיר נוכחי: {current}$"
+    )
+    send_discord_message(public_webhook, message)
+    log_trade_update(symbol, entry, current, stop, take, status)
+
+elif status == "consider_long":
+    # המלצה להפוך ללונג ← שורט
+    message = (
+        f"התראת שינוי מגמה!\n"
+        f"מניה: {symbol}\n"
+        f"כיוון מתוכנן: SHORT\n"
+        f"סטטוס: עלייה חזקה זוהתה.\n"
+        f"המלצה: לסגור עסקת לונג ולשקול פתיחת SHORT.\n"
+        f"מחיר נוכחי: {current}$"
+    )
+    send_discord_message(public_webhook, message)
+    log_trade_update(symbol, entry, current, stop, take, status)
             # הפעלת הבוט
 import schedule
 import time
