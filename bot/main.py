@@ -194,19 +194,19 @@ def manage_trades():
         direction = trade['direction']
 
                 if status == "ok":
-        formatted_message = format_trade_signal(
-            symbol=symbol,
-            direction=direction,
-            entry_price=entry,
-            stop_loss=stop,
-            take_profit=take,
-            market_condition=market_condition,
-            trend_line=trend_line,
-            support_resistance=support_resistance,
-            fundamental_status=fundamental_status,
-            bot_recommendation=bot_recommendation,
-            total_score=total_score,
-            strategic_zone=strategic_zone
+                    formatted_message = format_trade_signal(
+                        symbol=symbol,
+                        direction=direction,
+                        entry_price=entry,
+                        stop_loss=stop,
+                        take_profit=take,
+                        market_condition=market_condition,
+                        trend_line=trend_line,
+                        support_resistance=support_resistance,
+                        fundamental_status=fundamental_status,
+                        bot_recommendation=bot_recommendation,
+                        total_score=total_score,
+                        strategic_zone=strategic_zone
         )
         send_discord_message(public_webhook, formatted_message)
         log_trade_update(symbol, entry, current, stop, take, status)
