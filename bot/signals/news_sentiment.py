@@ -1,35 +1,36 @@
-import os
 import requests
+import os
 
-def analyze_news_sentiment(symbol):
-    api_key = os.getenv("API_NEWS_KEY")
-    if not api_key:
-        return "לא הוזן API של חדשות"
+NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 
-    url = f"https://newsapi.org/v2/everything?q={symbol}&language=en&sortBy=publishedAt&pageSize=10&apiKey={api_key}"
-
+def get_sentiment_score(symbol):
+    url = f"https://newsapi.org/v2/everything?q={symbol}&language=en&sortBy=publishedAt&pageSize=10&apiKey={NEWS_API_KEY}"
     try:
         response = requests.get(url)
+        if response.status_code != 200:
+            print(f"שגיאה ב-NewsAPI עבור {symbol}: {response.status_code}")
+            return 0  # סנטימנט ניטרלי כברירת מחדל
+
         data = response.json()
+        articles = data.get("articles", [])
+        if not articles:
+            return 0  # אין חדשות – סנטימנט ניטרלי
 
-        if response.status_code != 200 or "articles" not in data:
-            return "שגיאה בניתוח חדשות"
+        positive_words = ["growth", "beats", "strong", "profit", "positive", "record", "surge", "up", "rally", "bullish"]
+        negative_words = ["loss", "misses", "decline", "weak", "negative", "drop", "fall", "crash", "down", "bearish"]
 
-        headlines = [article["title"] for article in data["articles"] if "title" in article]
+        score = 0
+        for article in articles:
+            content = (article["title"] or "") + " " + (article["description"] or "")
+            content_lower = content.lower()
+            for word in positive_words:
+                if word in content_lower:
+                    score += 1
+            for word in negative_words:
+                if word in content_lower:
+                    score -= 1
 
-        # ניתוח פשוט: אם יש יותר כותרות חיוביות מאשר שליליות
-        positive_words = ["growth", "profit", "beat", "strong", "up", "surge"]
-        negative_words = ["loss", "drop", "miss", "down", "weak", "cut"]
-
-        pos_count = sum(any(p in h.lower() for p in positive_words) for h in headlines)
-        neg_count = sum(any(n in h.lower() for n in negative_words) for h in headlines)
-
-        if pos_count > neg_count:
-            return "סנטימנט חיובי"
-        elif neg_count > pos_count:
-            return "סנטימנט שלילי"
-        else:
-            return "סנטימנט ניטרלי"
-
+        return max(min(score, 5), -5)  # מגביל בין -5 ל+5
     except Exception as e:
-        return f"שגיאה בניתוח סנטימנט: {e}"
+        print(f"שגיאת סנטימנט ({symbol}): {e}")
+        return 0
