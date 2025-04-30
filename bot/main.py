@@ -11,8 +11,8 @@ from report_scheduler import start_report_scheduler
 from utils.alert_manager import mark_alert_sent, can_send_alert, reset_alert_flags
 from uptime_ping import start_uptime_ping
 from signals.signal_selector import get_best_signal
-signal_sent_today = False
 from utils.formatter import format_trade_signal
+signal_sent_today = False
 
 # טעינת קובץ .env (אם יש)
 load_dotenv()
