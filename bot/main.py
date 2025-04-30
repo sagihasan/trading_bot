@@ -210,9 +210,6 @@ def manage_trades():
                 )
                 send_discord_message(public_webhook, formatted_message)
                 log_trade_update(symbol, entry, current, stop, take, status)
-        )
-        send_discord_message(public_webhook, formatted_message)
-        log_trade_update(symbol, entry, current, stop, take, status)
 
 elif status == "consider_short":
     message = (
