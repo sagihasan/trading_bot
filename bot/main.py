@@ -194,31 +194,46 @@ def manage_trades():
         direction = trade['direction']
 
         if status == "ok":
-            # הכל בסדר
-            message = (
-                f"איתות עסקה:\n"
-                f"מניה: {symbol}\n"
-                f"כיוון מתוכנן: {direction.upper()}\n"
-                f"מחיר כניסה: {entry}$\n"
-                f"סטופ לוס: {stop}$\n"
-                f"טייק פרופיט: {take}$\n"
-                f"מצב שוק: תואם לניתוח.\n"
-            )
-           # יצירת הודעת האיתות בפורמט החדש
-formatted_message = format_trade_signal(
-    symbol=symbol,
-    direction=direction,
-    entry_price=entry_price,
-    stop_loss=stop_loss,
-    take_profit=take_profit,
-    market_condition=market_condition,
-    trend_line=trend_line,
-    support_resistance=support_resistance,
-    fundamental_status=fundamental_status,
-    bot_recommendation=bot_recommendation,
-    total_score=total_score,
-    strategic_zone=strategic_zone  # אם אין – תשאיר כ־None
-)
+    formatted_message = format_trade_signal(
+        symbol=symbol,
+        direction=direction,
+        entry_price=entry,
+        stop_loss=stop,
+        take_profit=take,
+        market_condition=market_condition,
+        trend_line=trend_line,
+        support_resistance=support_resistance,
+        fundamental_status=fundamental_status,
+        bot_recommendation=bot_recommendation,
+        total_score=total_score,
+        strategic_zone=strategic_zone
+    )
+    send_discord_message(public_webhook, formatted_message)
+    log_trade_update(symbol, entry, current, stop, take, status)
+
+elif status == "consider_short":
+    message = (
+        f"התרעת שינוי מגמה!\n"
+        f"מניה: {symbol}\n"
+        f"כיוון מתוכנן: LONG\n"
+        f"סטטוס: ירידה חזקה זוהתה.\n"
+        f"המלצה: לסגור עסקת שורט ולשקול פתיחת LONG.\n"
+        f"מחיר נוכחי: {current}$"
+    )
+    send_discord_message(public_webhook, message)
+    log_trade_update(symbol, entry, current, stop, take, status)
+
+elif status == "consider_long":
+    message = (
+        f"התרעת שינוי מגמה!\n"
+        f"מניה: {symbol}\n"
+        f"כיוון מתוכנן: SHORT\n"
+        f"סטטוס: עלייה חזקה זוהתה.\n"
+        f"המלצה: לסגור עסקת לונג ולשקול פתיחת SHORT.\n"
+        f"מחיר נוכחי: {current}$"
+    )
+    send_discord_message(public_webhook, message)
+    log_trade_update(symbol, entry, current, stop, take, status)
 
 # שליחת ההודעה המעוצבת לדיסקורד
 elif status == "consider_short":
@@ -238,6 +253,18 @@ elif status == "consider_long":
     # המלצה להפוך ללונג ← שורט
     message = (
         f"התראת שינוי מגמה!\n"
+        f"מניה: {symbol}\n"
+        f"כיוון מתוכנן: SHORT\n"
+        f"סטטוס: עלייה חזקה זוהתה.\n"
+        f"המלצה: לסגור עסקת לונג ולשקול פתיחת SHORT.\n"
+        f"מחיר נוכחי: {current}$"
+    )
+    send_discord_message(public_webhook, message)
+    log_trade_update(symbol, entry, current, stop, take, status)
+
+elif status == "consider_long":
+    message = (
+        f"התרעת שינוי מגמה!\n"
         f"מניה: {symbol}\n"
         f"כיוון מתוכנן: SHORT\n"
         f"סטטוס: עלייה חזקה זוהתה.\n"
