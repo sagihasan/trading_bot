@@ -2,6 +2,7 @@ import os
 import random
 import requests
 import yfinance as yf
+from signals.signal_selector import get_best_signal
 
 # טוען משתני סביבה
 public_webhook = os.getenv("DISCORD_PUBLIC_WEBHOOK")
@@ -73,10 +74,18 @@ def send_signal_to_discord(signal):
 # הרצת מנוע האיתותים
 def run_signals_engine():
     print("מתחיל סריקת מניות...")
-    for symbol in symbols:
-        result = analyze_stock(symbol)
-        if result:
-            send_signal_to_discord(result)
-            break
-    else:
-        print("לא נמצא איתות מתאים היום.")
+    best_signal = get_best_signal(symbols)
+
+if best_signal:
+    signal_message = format_trade_signal(
+        symbol=best_signal["symbol"],
+        price=best_signal["price"],
+        stop_loss=round(best_signal["price"] * 0.97, 2),  # לדוגמה 3% סטופ לוס
+        take_profit=round(best_signal["price"] * 1.05, 2),  # לדוגמה 5% טייק פרופיט
+        score=best_signal["score"],
+        recommendation=best_signal["recommendation"]
+    )
+    send_discord_message(public_webhook, signal_message)
+else:
+    send_discord_message(public_webhook, "לא נמצאה מניה מתאימה היום.")
+        
