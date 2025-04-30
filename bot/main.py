@@ -368,7 +368,7 @@ def fallback_signal_if_needed():
 if __name__ == "__main__":
     print("בדיקה ידנית התחילה...")
     run_signals_engine()  # זו הפונקציה שמריצה את הסריקה הרגילה
-    fallback_signal_if_needed():
+    fallback_signal_if_needed()
 
     schedule.every().minutes.do(manage_trades)  # בדיקת עסקאות פתוחות
 
