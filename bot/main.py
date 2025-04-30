@@ -331,11 +331,9 @@ def fallback_signal_if_needed():
 
     send_discord_message(public_webhook, message)
 
-import schedule
-import time
-
 def fallback_signal_if_needed():
-    print("fallback_signal_if_needed הופעלה")
+    print("שלב 1: הפונקציה fallback_signal_if_needed הופעלה")
+
     symbol = "PLTR"
     direction = "LONG"
     entry_price = 20
@@ -348,6 +346,8 @@ def fallback_signal_if_needed():
     bot_recommendation = "המלצה להיכנס"
     total_score = 8
     strategic_zone = "Golden Zone"
+
+    print("שלב 2: הגדרות משתנים הושלמו")
 
     formatted_message = format_trade_signal(
         symbol=symbol,
@@ -362,6 +362,11 @@ def fallback_signal_if_needed():
         bot_recommendation=bot_recommendation,
         total_score=total_score,
         strategic_zone=strategic_zone
+    )
+
+    print("שלב 3: ההודעה עוצבה – שולח לדיסקורד")
+
+    send_discord_message(public_webhook, formatted_message)
     )
 
     send_discord_message(public_webhook, formatted_message)
