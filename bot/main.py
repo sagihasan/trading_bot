@@ -2,7 +2,7 @@ import os
 import requests
 import schedule
 import time
-from datetime import datetime
+from datetime
 import pytz
 from dotenv import load_dotenv
 from trade_management import log_trade_update
@@ -251,8 +251,6 @@ def manage_trades():
             send_discord_message(public_webhook, message)
             log_trade_update(symbol, entry, current, stop, take, status)
             # הפעלת הבוט
-import schedule
-import time
 
 if __name__ == "__main__":
     try:
@@ -261,12 +259,22 @@ if __name__ == "__main__":
         start_uptime_ping()
         schedule.every(5).minutes.do(manage_trades)
         start_report_scheduler()
+
+while True:
+    current_time = datetime.now().time()
+    if current_time >= datetime.time(22, 40):
+        print("עכשיו אחרי 22:40 - מתחיל לבדוק איתותים...")
+        manage_trades()
+    else:
+        print("עדיין לא 22:40 - מחכה...")
+
+    schedule.run_pending()
+    time.sleep(60)  # בודק כל דקה
+            
     except Exception as e:
         print(f"שגיאה בהרצת הבוט: {e}")
         send_discord_message(error_webhook, f"שגיאה בהרצת הבוט: {e}")
         
-
-
     except Exception as e:
         print(f"שגיאה בשליחת איתות fallback: {e}")
         
