@@ -18,8 +18,8 @@ def send_discord_message(webhook_url, message):
             f"שגיאה בשליחה ל־Webhook: {webhook_url} - קוד {response.status_code}"
         )
 
-send_signal_to_discord("בדיקה ידנית של איתות")
 
+send_discord_message(public_webhook, "בדיקת איתות ידנית מהבוט")
 
 print("בדיקת Webhook ציבורי...")
 send_discord_message(public_webhook, "זהו רק טסט ציבורי.")
