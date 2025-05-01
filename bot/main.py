@@ -2,7 +2,7 @@ import os
 import requests
 import schedule
 import time
-from datetime
+from datetime import datetime
 import pytz
 from dotenv import load_dotenv
 from trade_management import log_trade_update
@@ -191,15 +191,6 @@ def check_trade_direction(trade):
 
 # פונקציה לניהול עסקאות
 def manage_trades():
-    for trade in open_trades:
-        status = check_trade_direction(trade)
-        symbol = trade['symbol']
-        entry = trade['entry_price']
-        current = trade['current_price']
-        stop = trade['stop_loss']
-        take = trade['take_profit']
-        direction = trade['direction']
-
     for trade in open_trades:
         status = check_trade_direction(trade)
         symbol = trade['symbol']
