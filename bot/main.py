@@ -12,7 +12,7 @@ from utils.alert_manager import mark_alert_sent, can_send_alert, reset_alert_fla
 from uptime_ping import start_uptime_ping
 from signals.signal_selector import get_best_signal
 from utils.formatter import format_trade_signal
-from discord_test import send_signal_to_discord
+from discord_test import send_discord_message, public_webhook
 signal_sent_today = False
 market_condition = "unknown"
 def format_trade_signal(signal_data):
@@ -377,7 +377,7 @@ def fallback_signal_if_needed():
     print("שליחת איתות - הצליחה (בדיקה)")
     
     if __name__ == "__main__":
-        send_signal_to_discord("בדיקת איתות ידנית מהבוט")
+    send_discord_message(public_webhook, "בדיקת איתות ידנית מהבוט")
     run_signals_engine()  # זו הפונקציה שמריצה את הסריקה הרגילה
     fallback_signal_if_needed()
 
