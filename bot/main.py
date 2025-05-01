@@ -251,16 +251,16 @@ if __name__ == "__main__":
         schedule.every(5).minutes.do(manage_trades)
         start_report_scheduler()
 
-while True:
-    current_time = datetime.now().time()
-    if current_time >= datetime.time(22, 40):
-        print("עכשיו אחרי 22:40 - מתחיל לבדוק איתותים...")
-        manage_trades()
-    else:
-        print("עדיין לא 22:40 - מחכה...")
+        while True:
+            current_time = datetime.now().time()
+            if current_time >= datetime.time(22, 40):
+                print("עכשיו אחרי 22:40 - מתחיל לבדוק איתותים...")
+                manage_trades()
+            else:
+                print("עדיין לא 22:40 - מחכה...")
 
-    schedule.run_pending()
-    time.sleep(60)  # בודק כל דקה
+            schedule.run_pending()
+            time.sleep(60)  # בודק כל דקה
             
     except Exception as e:
         print(f"שגיאה בהרצת הבוט: {e}")
@@ -268,13 +268,7 @@ while True:
         
     except Exception as e:
         print(f"שגיאה בשליחת איתות fallback: {e}")
-        
-        while True:
-            schedule.run_pending()
-            manage_trades()
-            fallback_signal_if_needed()
-            time.sleep(1)
-
+ 
             # שליחת התראה על ניהול עסקה
             if can_send_alert("management_sent"):
                 send_discord_message(private_webhook, "✔️ הבוט סיים לעבור על ניהול העסקאות.")
