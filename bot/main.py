@@ -377,7 +377,7 @@ def fallback_signal_if_needed():
     print("שליחת איתות - הצליחה (בדיקה)")
     
     if __name__ == "__main__":
-    send_signal_to_discord("בדיקת איתות ידנית מהבוט")
+        send_signal_to_discord("בדיקת איתות ידנית מהבוט")
     run_signals_engine()  # זו הפונקציה שמריצה את הסריקה הרגילה
     fallback_signal_if_needed()
 
