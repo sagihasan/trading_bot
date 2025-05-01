@@ -13,6 +13,9 @@ from uptime_ping import start_uptime_ping
 from signals.signal_selector import get_best_signal
 from utils.formatter import format_trade_signal
 signal_sent_today = False
+market_condition = "unknown"
+def format_trade_signal(signal_data):
+    return f"סיגנל: {signal_data}"
 
 # טעינת קובץ .env (אם יש)
 load_dotenv()
