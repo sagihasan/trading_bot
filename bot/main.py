@@ -367,7 +367,7 @@ def fallback_signal_if_needed():
     print("שלב 3: ההודעה עוצבה – שולח לדיסקורד")
 
     send_discord_message(public_webhook, formatted_message)
-    )
+    
 
     send_discord_message(public_webhook, formatted_message)
     print("שליחת איתות - הצליחה (בדיקה)")
